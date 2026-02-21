@@ -630,7 +630,8 @@ class Espressif32Platform(PlatformBase):
             self.install_tool(toolchain)
 
         # ULP toolchain if ULP directory exists
-        if mcu_config.get("ulp_toolchain") and Path("ulp").is_dir():
+        ulp_dir = variables.get("board_build.ulp_dir", "ulp")
+        if mcu_config.get("ulp_toolchain") and Path(ulp_dir).is_dir():
             for toolchain in mcu_config["ulp_toolchain"]:
                 self.install_tool(toolchain)
 

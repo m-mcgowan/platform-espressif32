@@ -2609,11 +2609,12 @@ env["BUILDERS"]["ElfToBin"].action = action
 # Compile ULP sources in 'ulp' folder
 #
 
-ulp_dir = str(Path(PROJECT_DIR) / "ulp")
+ulp_dir_name = env.GetProjectOption("board_build.ulp_dir", "ulp")
+ulp_dir = str(Path(PROJECT_DIR) / ulp_dir_name)
 # ULP support: ESP32, ESP32-S2, ESP32-S3, ESP32-C6, ESP32-P4
 # No ULP: ESP32-C2, ESP32-C3, ESP32-C5, ESP32-H2
 if os.path.isdir(ulp_dir) and os.listdir(ulp_dir) and mcu not in ("esp32c2", "esp32c3", "esp32c5", "esp32h2"):
-    env.SConscript("ulp.py", exports="env sdk_config project_config app_includes idf_variant")
+    env.SConscript("ulp.py", exports="env sdk_config project_config app_includes idf_variant ulp_dir_name")
 
 #
 # Compile Arduino IDF sources

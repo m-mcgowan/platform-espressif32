@@ -39,6 +39,7 @@ jobs:
           - "examples/espidf-ulp"
           - "examples/espidf-ulp-riscv"
           - "examples/espidf-ulp-lp"
+          - "examples/espidf-ulp-lp-custom-dir"
         exclude:
           - os: windows-latest
             example: "examples/espidf-ulp"
@@ -46,6 +47,8 @@ jobs:
             example: "examples/espidf-ulp-lp"
           - os: windows-latest
             example: "examples/espidf-ulp-riscv"
+          - os: windows-latest
+            example: "examples/espidf-ulp-lp-custom-dir"
           - os: windows-latest
             example: "examples/espidf-arduino-C6-ULP-blink"
           - os: windows-latest

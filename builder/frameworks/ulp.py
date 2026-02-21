@@ -22,12 +22,13 @@ from platformio.proc import exec_command
 
 from SCons.Script import Import
 
-Import("env sdk_config project_config app_includes idf_variant")
+Import("env sdk_config project_config app_includes idf_variant ulp_dir_name")
 
 ulp_env = env.Clone()
 platform = ulp_env.PioPlatform()
 FRAMEWORK_DIR = platform.get_package_dir("framework-espidf")
 BUILD_DIR = ulp_env.subst("$BUILD_DIR")
+ULP_DIR = str(Path(ulp_env.subst("$PROJECT_DIR")) / ulp_dir_name)
 ULP_BUILD_DIR = str(Path(BUILD_DIR) / "esp-idf" / project_config["name"].replace("__idf_", "") / "ulp_main")
 
 is_xtensa = idf_variant in ("esp32", "esp32s2", "esp32s3")
@@ -61,8 +62,8 @@ def prepare_ulp_env_vars(env):
 
 def collect_ulp_sources():
     return [
-        str(Path(ulp_env.subst("$PROJECT_DIR")) / "ulp" / f)
-        for f in os.listdir(str(Path(ulp_env.subst("$PROJECT_DIR")) / "ulp"))
+        str(Path(ULP_DIR) / f)
+        for f in os.listdir(ULP_DIR)
         if f.endswith((".c", ".S", ".s"))
     ]
 
@@ -105,7 +106,7 @@ def generate_ulp_config(target_config):
             + str(Path(FRAMEWORK_DIR) / "components" / "ulp" / "cmake" / ulp_toolchain),
             "-DULP_S_SOURCES=%s" % ";".join([fs.to_unix_path(s.get_abspath()) for s in source]),
             "-DULP_APP_NAME=ulp_main",
-            "-DCOMPONENT_DIR=" + str(Path(ulp_env.subst("$PROJECT_DIR")) / "ulp"),
+            "-DCOMPONENT_DIR=" + ULP_DIR,
             "-DCOMPONENT_INCLUDES=%s" % comp_includes,
             "-DIDF_TARGET=%s" % idf_variant,
             "-DIDF_PATH=" + fs.to_unix_path(FRAMEWORK_DIR),
