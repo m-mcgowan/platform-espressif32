@@ -2606,7 +2606,7 @@ action.cmd_list = env["BUILDERS"]["ElfToBin"].action.cmd_list.replace(
 env["BUILDERS"]["ElfToBin"].action = action
 
 #
-# Compile ULP sources in 'ulp' folder
+# Compile ULP sources in configurable ULP folder (default: 'ulp')
 #
 
 ulp_dir_name = env.GetProjectOption("board_build.ulp_dir", "ulp")
